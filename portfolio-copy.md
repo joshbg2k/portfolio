@@ -1,5 +1,4 @@
 # Portfolio Copy — Joshua Berry
-
 ## Updated from resume cross-reference
 
 ---
@@ -57,18 +56,16 @@
 ## CASE STUDY 1: Amazon HR Chatbot
 
 ### Headline
-
-_Fixing a chatbot nobody trusted._
+*Fixing a chatbot nobody trusted.*
 
 ### Subhead
-
-Amazon · Design Technologist II · 2021 · Cross-functional UX lead
+Amazon · Design Technologist II · 2020 · Cross-functional UX lead
 
 ---
 
 ### The Problem
 
-The Amazon employee HR chatbot had been built without design input. Employees knew it, and they said so plainly: _"Chatbot doesn't work ever."_ _"Chatbot is no bueno."_
+The Amazon employee HR chatbot had been built without design input. Employees knew it, and they said so plainly: *"Chatbot doesn't work ever."* *"Chatbot is no bueno."*
 
 The goal wasn't to rebuild the underlying system — that was off the table. The challenge was to craft a scalable UX vision that could dramatically improve the experience within the existing constraints, then validate every decision before a single line of production code was written.
 
@@ -98,7 +95,7 @@ From there, a UX vision was scoped across six areas: overall layout, message rea
 
 The prototype architecture was deliberate: JSON chat data in, configurable settings via URL, rendered to a mobile browser. Engineers could validate timing, animation feel, and edge cases without any back-end changes. Three distinct message delivery modes were prototyped and tested — simultaneous, cascading at a constant interval, and dynamic delivery paced to reading time. Research participants had strong, clear preferences.
 
-For the feedback redesign, a single well-timed ask was tested against the persistent ambient prompt. User research confirmed the direction: _"If the format for providing feedback is immediately after the experience and simple to do, it is more likely that people will give feedback."_
+For the feedback redesign, a single well-timed ask was tested against the persistent ambient prompt. User research confirmed the direction: *"If the format for providing feedback is immediately after the experience and simple to do, it is more likely that people will give feedback."*
 
 ---
 
@@ -121,12 +118,10 @@ No changes to the underlying system meant no changes to what the chatbot underst
 ## CASE STUDY 2: Figma Design Handoff Plugin
 
 ### Headline
-
-_Click a component in Figma. Get the exact production code._
+*Click a component in Figma. Get the exact production code.*
 
 ### Subhead
-
-Amazon · Design Technologist II · 2021–2022 · Solo
+Amazon · Design Technologist II · 2020 · Solo
 
 ---
 
@@ -173,7 +168,7 @@ The concept of design-to-code fidelity as an organizational priority — not an 
 
 The product team picked up the plugin and started developing it as an official product. The AWS design system team and the Amazon.com design system team both asked to learn how to build their own versions; both were taught. The design system team ran with the concept further, and a small informal group started pushing toward what an AI-assisted next-generation version of this tooling might look like.
 
-The internal reaction said something about the gap that had existed: _"That right there is holy grail kind of stuff."_
+The internal reaction said something about the gap that had existed: *"That right there is holy grail kind of stuff."*
 
 ---
 
@@ -192,11 +187,9 @@ Building something four years before the category existed — something that oth
 ## CASE STUDY 3: Amazon Affinity Groups — Employee Mobile App
 
 ### Headline
-
-_Crossing over: from design technologist to production engineering lead._
+*Crossing over: from design technologist to production engineering lead.*
 
 ### Subhead
-
 Amazon · Design Technologist II · 2022–2024 · Front-End Engineering Lead
 Internal product — visuals under NDA.
 
@@ -237,11 +230,9 @@ Most design technologist portfolios are all vision, no production. This entry is
 ## CASE STUDY 4: Apple.com — Product Launch Pages
 
 ### Headline
-
-_Pixel-perfect, on deadline, at Apple scale._
+*Pixel-perfect, on deadline, at Apple scale.*
 
 ### Subhead
-
 Apple · Senior Front-End Developer (Contract) · 2018–2020 · Sunnyvale, CA
 
 ---
@@ -267,11 +258,9 @@ Apple's production bar is one of the highest in the industry. Every pixel is del
 ## CASE STUDY 5: IBM Watson Cognitive Dress
 
 ### Headline
-
-_We pushed code to a dress in a van on the way to the Met Gala._
+*We pushed code to a dress in a van on the way to the Met Gala.*
 
 ### Subhead
-
 Ogilvy & IBM · Creative Technologist · 2016 · Hardware + Software
 
 ---
@@ -315,11 +304,9 @@ It's the clearest single demonstration that design technology isn't always a scr
 ## CASE STUDY 6: 2020 Lincoln Continental UX
 
 ### Headline
-
-_A real-time network inside a car, shipped to Shanghai in a Pelican case._
+*A real-time network inside a car, shipped to Shanghai in a Pelican case.*
 
 ### Subhead
-
 Smart Design · Design Technologist · 2017 · Hardware + React Native + WebSockets
 
 ---
@@ -360,7 +347,7 @@ Six weeks. Five apps. A custom hardware rig. User tested on two continents.
 
 ## ML & AI THREAD
 
-_A through-line across the whole career — for use as a timeline section or sidebar._
+*A through-line across the whole career — for use as a timeline section or sidebar.*
 
 ---
 
@@ -397,4 +384,4 @@ Based in Providence, Rhode Island. Open to the right full-time or contract oppor
 
 ---
 
-_— End of portfolio copy —_
+*— End of portfolio copy —*
