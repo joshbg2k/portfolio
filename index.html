@@ -1,0 +1,1189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Joshua Berry — Design Technologist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f2ede6;
+        --ink: #0d0d0d;
+        --rust: #c94a1e;
+        --serif: "Instrument Serif", Georgia, serif;
+        --mono: "DM Mono", "Courier New", monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        cursor: none;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-weight: 300;
+        font-size: 15px;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Noise overlay */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 9000;
+      }
+
+      /* ─── Cursor ─── */
+      .cursor {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        background: var(--ink);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 10000;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.15s ease,
+          height 0.15s ease,
+          background 0.15s ease;
+        mix-blend-mode: multiply;
+      }
+      .cursor-ring {
+        position: fixed;
+        width: 38px;
+        height: 38px;
+        border: 1px solid rgba(13, 13, 13, 0.4);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          border-color 0.15s,
+          width 0.15s,
+          height 0.15s;
+      }
+      .cursor.hovering {
+        width: 5px;
+        height: 5px;
+        background: var(--rust);
+      }
+      .cursor-ring.hovering {
+        width: 52px;
+        height: 52px;
+        border-color: var(--rust);
+      }
+
+      /* ─── Header ─── */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 52px;
+        background: rgba(242, 237, 230, 0.92);
+        border-bottom: 1px solid rgba(13, 13, 13, 0.07);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .header-name {
+        font-family: var(--serif);
+        font-size: 17px;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      nav {
+        display: flex;
+        gap: 36px;
+      }
+      nav a {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--ink);
+        opacity: 0.45;
+        transition:
+          opacity 0.2s,
+          color 0.2s;
+      }
+      nav a:hover {
+        opacity: 1;
+        color: var(--rust);
+      }
+
+      /* ─── Section label ─── */
+      .section-label {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--rust);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 56px;
+      }
+      .section-label::before {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 1px;
+        background: var(--rust);
+        flex-shrink: 0;
+      }
+
+      /* ─── Hero ─── */
+      #hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 120px 52px 88px;
+      }
+      .hero-eyebrow {
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--rust);
+        margin-bottom: 28px;
+        opacity: 0;
+        animation: fadeUp 0.8s 0.2s ease forwards;
+      }
+      .hero-headline {
+        font-family: var(--serif);
+        font-size: clamp(56px, 8.5vw, 118px);
+        line-height: 0.93;
+        letter-spacing: -0.025em;
+        margin-bottom: 52px;
+        max-width: 900px;
+        opacity: 0;
+        animation: fadeUp 0.9s 0.35s ease forwards;
+      }
+      .hero-headline em {
+        font-style: italic;
+        color: var(--rust);
+      }
+      .hero-sub {
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.75;
+        max-width: 440px;
+        color: rgba(13, 13, 13, 0.58);
+        margin-bottom: 56px;
+        opacity: 0;
+        animation: fadeUp 0.9s 0.5s ease forwards;
+      }
+      .hero-meta {
+        display: flex;
+        gap: 40px;
+        font-family: var(--mono);
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(13, 13, 13, 0.32);
+        opacity: 0;
+        animation: fadeUp 0.8s 0.65s ease forwards;
+      }
+      .hero-meta span::before {
+        content: "—";
+        margin-right: 8px;
+        opacity: 0.4;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      /* ─── Ticker ─── */
+      #ticker {
+        overflow: hidden;
+        background: var(--ink);
+        border-top: 1px solid rgba(13, 13, 13, 0.12);
+        border-bottom: 1px solid rgba(13, 13, 13, 0.12);
+      }
+      .ticker-track {
+        display: flex;
+        white-space: nowrap;
+        animation: tickerScroll 38s linear infinite;
+      }
+      .ticker-track:hover {
+        animation-play-state: paused;
+      }
+      .ticker-item {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--paper);
+        padding: 14px 0;
+        flex-shrink: 0;
+      }
+      .ticker-dot {
+        color: var(--rust);
+        padding: 14px 20px;
+        flex-shrink: 0;
+        font-size: 9px;
+      }
+      @keyframes tickerScroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* ─── Works ─── */
+      #works {
+        padding: 120px 52px;
+        border-top: 1px solid rgba(13, 13, 13, 0.08);
+      }
+
+      .work-item {
+        display: grid;
+        grid-template-columns: 100px 1fr 40px;
+        align-items: start;
+        gap: 40px;
+        padding: 36px 0;
+        border-bottom: 1px solid rgba(13, 13, 13, 0.08);
+        text-decoration: none;
+        color: var(--ink);
+        cursor: none;
+      }
+      .work-item:first-of-type {
+        border-top: 1px solid rgba(13, 13, 13, 0.08);
+      }
+
+      .work-left {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        padding-top: 4px;
+      }
+      .work-year {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: rgba(13, 13, 13, 0.35);
+      }
+      .work-number {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 300;
+        letter-spacing: 0.04em;
+        color: rgba(13, 13, 13, 0.2);
+      }
+
+      .work-body {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .work-title {
+        font-family: var(--serif);
+        font-size: clamp(24px, 3.2vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.015em;
+        transition: color 0.2s;
+      }
+      .work-item:hover .work-title {
+        color: var(--rust);
+      }
+
+      .work-desc {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.7;
+        color: rgba(13, 13, 13, 0.5);
+        max-width: 600px;
+      }
+      .work-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 4px;
+      }
+      .tag {
+        font-family: var(--mono);
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border: 1px solid rgba(13, 13, 13, 0.16);
+        border-radius: 2px;
+        color: rgba(13, 13, 13, 0.5);
+      }
+
+      .work-arrow {
+        font-size: 17px;
+        color: rgba(13, 13, 13, 0.18);
+        padding-top: 7px;
+        text-align: right;
+        transition:
+          transform 0.2s,
+          color 0.2s;
+      }
+      .work-item:hover .work-arrow {
+        transform: translate(4px, -4px);
+        color: var(--rust);
+      }
+
+      .work-item.has-image {
+        grid-template-columns: 100px 1fr 42%;
+        align-items: stretch;
+      }
+      .work-image-col {
+        overflow: hidden;
+      }
+      .work-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        filter: saturate(0.82) contrast(1.02);
+        transition: filter 0.4s ease;
+      }
+      .work-item:hover .work-image {
+        filter: saturate(1) contrast(1.02);
+      }
+
+      /* ─── Skills ─── */
+      #skills {
+        padding: 120px 52px;
+        background: var(--ink);
+        color: var(--paper);
+      }
+      #skills .section-label {
+        color: var(--rust);
+      }
+      #skills .section-label::before {
+        background: var(--rust);
+      }
+
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 48px 64px;
+      }
+      .skill-group h3 {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--rust);
+        margin-bottom: 18px;
+      }
+      .skill-group ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .skill-group li {
+        font-family: var(--serif);
+        font-size: 20px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        color: rgba(242, 237, 230, 0.8);
+      }
+
+      /* ─── ML Thread ─── */
+      #ml-thread {
+        padding: 120px 52px;
+        border-top: 1px solid rgba(13, 13, 13, 0.08);
+      }
+      .thread-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .thread-headline {
+        font-family: var(--serif);
+        font-size: clamp(34px, 3.5vw, 52px);
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        position: sticky;
+        top: 120px;
+      }
+      .thread-headline em {
+        font-style: italic;
+        color: var(--rust);
+      }
+
+      .thread-entries {
+        display: flex;
+        flex-direction: column;
+      }
+      .thread-entry {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 32px;
+        padding: 28px 0;
+        border-bottom: 1px solid rgba(13, 13, 13, 0.08);
+      }
+      .thread-entry:first-child {
+        border-top: 1px solid rgba(13, 13, 13, 0.08);
+      }
+      .thread-year {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.06em;
+        color: rgba(13, 13, 13, 0.35);
+        padding-top: 3px;
+      }
+      .thread-body {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .thread-org {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--rust);
+      }
+      .thread-desc {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.7;
+        color: rgba(13, 13, 13, 0.6);
+      }
+
+      /* ─── About ─── */
+      #about {
+        padding: 120px 52px;
+        border-top: 1px solid rgba(13, 13, 13, 0.08);
+        background: var(--ink);
+        color: var(--paper);
+      }
+      #about .section-label {
+        color: var(--rust);
+      }
+      #about .section-label::before {
+        background: var(--rust);
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.1fr;
+        gap: 88px;
+        align-items: start;
+      }
+      .about-headline {
+        font-family: var(--serif);
+        font-size: clamp(36px, 4vw, 56px);
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        position: sticky;
+        top: 120px;
+        color: var(--paper);
+      }
+      .about-headline em {
+        font-style: italic;
+        color: var(--rust);
+      }
+
+      .about-body {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+      }
+      .about-body p {
+        font-family: var(--mono);
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.85;
+        color: rgba(242, 237, 230, 0.62);
+      }
+      .about-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 8px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(242, 237, 230, 0.1);
+      }
+      .about-detail-row {
+        display: flex;
+        gap: 20px;
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+      .detail-label {
+        font-weight: 400;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(242, 237, 230, 0.3);
+        min-width: 88px;
+        flex-shrink: 0;
+      }
+      .detail-value {
+        font-weight: 300;
+        color: rgba(242, 237, 230, 0.7);
+      }
+
+      /* ─── Contact ─── */
+      #contact {
+        padding: 120px 52px;
+        border-top: 1px solid rgba(13, 13, 13, 0.08);
+      }
+      .contupdate act-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: end;
+      }
+      .contact-headline {
+        font-family: var(--serif);
+        font-size: clamp(52px, 7vw, 96px);
+        line-height: 0.93;
+        letter-spacing: -0.025em;
+      }
+      .contact-headline em {
+        font-style: italic;
+        color: var(--rust);
+      }
+
+      .contact-right {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-bottom: 6px;
+      }
+      .contact-intro {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 300;
+        color: rgba(13, 13, 13, 0.5);
+        margin-bottom: 28px;
+        line-height: 1.75;
+      }
+      .contact-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+        text-decoration: none;
+        color: rgba(13, 13, 13, 0.48);
+        padding: 11px 0;
+        border-bottom: 1px solid rgba(13, 13, 13, 0.07);
+        transition: color 0.2s;
+      }
+      .contact-link:last-child {
+        border-bottom: none;
+      }
+      .contact-link:hover {
+        color: var(--rust);
+      }
+      .link-arrow {
+        opacity: 0.3;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+      }
+      .contact-link:hover .link-arrow {
+        opacity: 1;
+        transform: translate(3px, -3px);
+      }
+
+      /* ─── Footer ─── */
+      footer {
+        padding: 28px 52px;
+        border-top: 1px solid rgba(13, 13, 13, 0.07);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: var(--mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: rgba(13, 13, 13, 0.28);
+      }
+
+      /* ─── Scroll reveal ─── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition:
+          opacity 0.75s ease,
+          transform 0.75s ease;
+      }
+      .reveal.in-view {
+        opacity: 1;
+        transform: none;
+      }
+      .reveal-d1 {
+        transition-delay: 0.1s;
+      }
+      .reveal-d2 {
+        transition-delay: 0.2s;
+      }
+      .reveal-d3 {
+        transition-delay: 0.3s;
+      }
+      .reveal-d4 {
+        transition-delay: 0.4s;
+      }
+
+      /* ─── Responsive ─── */
+      @media (max-width: 1000px) {
+        .skills-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 860px) {
+        header {
+          padding: 18px 28px;
+        }
+        #hero,
+        #works,
+        #skills,
+        #ml-thread,
+        #about,
+        #contact {
+          padding-left: 28px;
+          padding-right: 28px;
+        }
+        .about-grid,
+        .contact-inner,
+        .thread-grid {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+        .about-headline,
+        .thread-headline {
+          position: static;
+        }
+        .work-item {
+          grid-template-columns: 72px 1fr;
+        }
+        .work-item.has-image {
+          grid-template-columns: 1fr;
+        }
+        .work-image-col {
+          height: 260px;
+        }
+        .work-arrow {
+          display: none;
+        }
+      }
+      @media (max-width: 560px) {
+        nav a:nth-child(n + 3) {
+          display: none;
+        }
+        .work-item {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .work-left {
+          flex-direction: row;
+          gap: 12px;
+        }
+        .hero-meta {
+          flex-direction: column;
+          gap: 8px;
+        }
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Header -->
+    <header>
+      <a href="#" class="header-name">Joshua Berry</a>
+      <nav>
+        <a href="#works">Works</a>
+        <a href="#skills">Skills</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section id="hero">
+      <p class="hero-eyebrow">Design Technologist</p>
+      <h1 class="hero-headline">
+        Design<br />that thinks,<br /><em>and builds.</em>
+      </h1>
+      <p class="hero-sub">
+        Research, UX, prototyping, and engineering — practiced across the full
+        stack, from earliest concept to shipped product.
+      </p>
+      <div class="hero-meta">
+        <span>Amazon · Apple · Smart Design · Ogilvy</span>
+        <span>Providence, RI</span>
+        <span>Open to Work</span>
+      </div>
+    </section>
+
+    <!-- Ticker -->
+    <div id="ticker" aria-hidden="true">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+
+    <!-- Works -->
+    <section id="works">
+      <p class="section-label">Selected Work</p>
+
+      <a href="#" class="work-item has-image reveal">
+        <div class="work-left">
+          <span class="work-year">2020</span>
+          <span class="work-number">01</span>
+        </div>
+        <div class="work-body">
+          <h2 class="work-title">Figma Design Handoff Plugin</h2>
+          <p class="work-desc">In 2020, built a completely original tool that mapped Amazon's Figma design system to its React component library — click any component, get exact production code and accessibility props. Figma shipped their own version of the concept in 2024. They called it Code Connect.</p>
+          <div class="work-tags">
+            <span class="tag">Engineering</span>
+            <span class="tag">Design Systems</span>
+            <span class="tag">Accessibility</span>
+          </div>
+        </div>
+        <div class="work-image-col">
+          <img src="images/handoff.png" alt="Figma plugin UI showing a Button component selected with production React import code and props surfaced in the panel" class="work-image" style="object-position: left center;">
+        </div>
+      </a>
+
+      <a href="#" class="work-item has-image reveal reveal-d1">
+        <div class="work-left">
+          <span class="work-year">2021</span>
+          <span class="work-number">02</span>
+        </div>
+        <div class="work-body">
+          <h2 class="work-title">Amazon Employee HR Chatbot</h2>
+          <p class="work-desc">Led a cross-functional redesign of Amazon's employee HR chatbot — introduced the first structured CSAT measurement the product ever had, landing at 4.65 / 5 via a Likert scale feedback UI I designed and contributed back to the org's design system.</p>
+          <div class="work-tags">
+            <span class="tag">Research</span>
+            <span class="tag">UX Design</span>
+            <span class="tag">Prototyping</span>
+          </div>
+        </div>
+        <div class="work-image-col">
+          <img src="images/chatbot.png" alt="HR Chatbot redesign showing mobile chat interface with live agent transfer flow" class="work-image" style="object-position: center top;">
+        </div>
+      </a>
+
+      <a href="#" class="work-item reveal reveal-d1">
+        <div class="work-left">
+          <span class="work-year">2022–24</span>
+          <span class="work-number">03</span>
+        </div>
+        <div class="work-body">
+          <h2 class="work-title">Amazon Affinity Groups — Employee App</h2>
+          <p class="work-desc">Led front-end development for a hybrid React Native / React app serving Amazon's global employee base — production TypeScript, GraphQL, i18n, CI/CD, and full accessibility compliance.</p>
+          <div class="work-tags">
+            <span class="tag">Engineering</span>
+            <span class="tag">React Native</span>
+            <span class="tag">TypeScript</span>
+          </div>
+        </div>
+        <span class="work-arrow">↗</span>
+      </a>
+
+      <a href="#" class="work-item has-image reveal reveal-d2">
+        <div class="work-left">
+          <span class="work-year">2018–20</span>
+          <span class="work-number">04</span>
+        </div>
+        <div class="work-body">
+          <h2 class="work-title">Apple.com — Product Launch Pages</h2>
+          <p class="work-desc">Senior Front-End Developer on Apple's product launch team — built the iMac, iMac Pro, Mac Pro, MacBook Pro, MacBook Air, Mac Mini, Safari, and Newsroom pages on one of the highest-trafficked sites in the world. The App Store page still runs the same design today.</p>
+          <div class="work-tags">
+            <span class="tag">Engineering</span>
+            <span class="tag">Motion</span>
+            <span class="tag">Front-End</span>
+          </div>
+        </div>
+        <div class="work-image-col">
+          <img src="images/app-store-hero.gif" alt="Apple App Store page hero animation" class="work-image" style="object-position: top center;">
+        </div>
+      </a>
+
+      <a href="#" class="work-item has-image reveal reveal-d2">
+        <div class="work-left">
+          <span class="work-year">2016</span>
+          <span class="work-number">05</span>
+        </div>
+        <div class="work-body">
+          <h2 class="work-title">IBM Watson Cognitive Dress</h2>
+          <p class="work-desc">Built the software and hardware system behind an ML-powered dress worn at the Met Gala — Watson sentiment data translated into real-time LED color, live on the red carpet. Now in the Henry Ford Museum.</p>
+          <div class="work-tags">
+            <span class="tag">Engineering</span>
+            <span class="tag">AI</span>
+            <span class="tag">Hardware</span>
+          </div>
+        </div>
+        <div class="work-image-col">
+          <img src="images/cognitive-dress.jpg" alt="Karolina Kurkova wearing the IBM Watson Cognitive Dress at the 2016 Met Gala" class="work-image" style="object-position: top center;">
+        </div>
+      </a>
+
+      <a href="#" class="work-item has-image reveal reveal-d3">
+        <div class="work-left">
+          <span class="work-year">2017</span>
+          <span class="work-number">06</span>
+        </div>
+        <div class="work-body">
+          <h2 class="work-title">2020 Lincoln Continental UX</h2>
+          <p class="work-desc">Built a real-time WebSocket network across 5 apps and custom Arduino hardware, embedded in a Lincoln Continental and shipped to Shanghai for user testing. Six weeks from kickoff to demo.</p>
+          <div class="work-tags">
+            <span class="tag">Engineering</span>
+            <span class="tag">Prototyping</span>
+            <span class="tag">Hardware</span>
+          </div>
+        </div>
+        <div class="work-image-col">
+          <img src="images/lincoln-continental.jpg" alt="Custom center console hardware rig with embedded iPad and rotary encoders inside the Lincoln Continental prototype" class="work-image">
+        </div>
+      </a>
+    </section>
+
+    <!-- Skills Grid -->
+    <section id="skills">
+      <p class="section-label">Capabilities</p>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <h3>Design</h3>
+          <ul>
+            <li>Product Design</li>
+            <li>UX Research</li>
+            <li>Interaction Design</li>
+            <li>Prototyping</li>
+            <li>Design Systems</li>
+          </ul>
+        </div>
+        <div class="skill-group reveal reveal-d1">
+          <h3>Engineering</h3>
+          <ul>
+            <li>React / TypeScript</li>
+            <li>React Native</li>
+            <li>HTML + CSS</li>
+            <li>Node.js</li>
+            <li>GraphQL</li>
+          </ul>
+        </div>
+        <div class="skill-group reveal reveal-d2">
+          <h3>AI &amp; ML</h3>
+          <ul>
+            <li>Claude / MCP</li>
+            <li>Figma Plugin API</li>
+            <li>NLP Tooling</li>
+            <li>Amazon Comprehend</li>
+            <li>Watson APIs</li>
+          </ul>
+        </div>
+        <div class="skill-group reveal reveal-d3">
+          <h3>Process</h3>
+          <ul>
+            <li>User Research</li>
+            <li>Usability Testing</li>
+            <li>Accessibility (WCAG)</li>
+            <li>Design–Dev Handoff</li>
+            <li>Workshop Facilitation</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ML / AI Thread -->
+    <section id="ml-thread">
+      <p class="section-label">AI Thread</p>
+      <div class="thread-grid">
+        <div>
+          <h2 class="thread-headline reveal">
+            Building with AI since before it had a <em>clean name.</em>
+          </h2>
+        </div>
+        <div class="thread-entries">
+          <div class="thread-entry reveal">
+            <span class="thread-year">2012</span>
+            <div class="thread-body">
+              <span class="thread-org">NBC Universal</span>
+              <p class="thread-desc">
+                Conceived and built a celebrity lookalike widget using ML image
+                classification and facial recognition — matching users' Facebook
+                friends to NBC talent, deployed in a second-screen mobile
+                experience.
+              </p>
+            </div>
+          </div>
+          <div class="thread-entry reveal reveal-d1">
+            <span class="thread-year">2015</span>
+            <div class="thread-body">
+              <span class="thread-org">Ogilvy &amp; IBM</span>
+              <p class="thread-desc">
+                Collaborated to concept and build the IBM Cognitive Dress —
+                Watson text classification translating social media sentiment
+                into real-time LED color on a dress worn at the Met Gala. Now in
+                the Henry Ford Museum.
+              </p>
+            </div>
+          </div>
+          <div class="thread-entry reveal reveal-d1">
+            <span class="thread-year">2016</span>
+            <div class="thread-body">
+              <span class="thread-org">Ogilvy / Nespresso</span>
+              <p class="thread-desc">
+                Built an early Alexa voice application for a Nespresso pitch —
+                voice control wired to a hacked espresso machine. An early
+                exploration of conversational AI and connected hardware.
+              </p>
+            </div>
+          </div>
+          <div class="thread-entry reveal reveal-d2">
+            <span class="thread-year">2022</span>
+            <div class="thread-body">
+              <span class="thread-org">Amazon</span>
+              <p class="thread-desc">
+                Deployed ML text classification models via Amazon Comprehend at
+                90%+ accuracy to evaluate UX writing quality at scale. Embedded
+                in Figma plugins and web apps. Trained UX writers to build and
+                run their own — an early human-in-the-loop AI tooling deployment
+                inside a large org.
+              </p>
+            </div>
+          </div>
+          <div class="thread-entry reveal reveal-d2">
+            <span class="thread-year">2024–</span>
+            <div class="thread-body">
+              <span class="thread-org">Independent</span>
+              <p class="thread-desc">
+                Building Figma MCP integrations and custom Claude skills for
+                design workflows — tooling that lets AI reason directly about
+                design files, generate annotations, surface component code, and
+                close the gap between design intent and production output.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+      <p class="section-label">About</p>
+      <div class="about-grid">
+        <div>
+          <h2 class="about-headline reveal">
+            The gap between design and engineering<br />is where
+            <em>I live.</em>
+          </h2>
+        </div>
+        <div class="about-body">
+          <p class="reveal">
+            I'm a design technologist with over a decade at the intersection of
+            UX and engineering — most recently at Amazon, before that at Apple,
+            Smart Design, and Ogilvy. I studied at ITP at NYU, which is where I
+            first understood that the most interesting problems don't belong
+            entirely to any one discipline.
+          </p>
+          <p class="reveal reveal-d1">
+            I've been building with AI since 2012 — facial recognition at NBC,
+            Watson-powered wearables at Ogilvy, NLP classifiers at Amazon. I
+            took time away from the industry to pursue something completely
+            different, and I came back because AI has made software development
+            feel genuinely exciting again.
+          </p>
+          <p class="reveal reveal-d2">
+            The tools available now — Claude Code, Figma MCP, spec-based
+            development — are changing what it means to work at the
+            design/engineering boundary. I want to be building at that frontier.
+          </p>
+          <div class="about-details reveal reveal-d3">
+            <div class="about-detail-row">
+              <span class="detail-label">Location</span>
+              <span class="detail-value">Providence, Rhode Island</span>
+            </div>
+            <div class="about-detail-row">
+              <span class="detail-label">Education</span>
+              <span class="detail-value"
+                >ITP, NYU Tisch School of the Arts</span
+              >
+            </div>
+            <div class="about-detail-row">
+              <span class="detail-label">Previously</span>
+              <span class="detail-value"
+                >Amazon · Apple · Smart Design · NBC · Ogilvy</span
+              >
+            </div>
+            <div class="about-detail-row">
+              <span class="detail-label">Status</span>
+              <span class="detail-value"
+                >Open to the right full-time or contract opportunity</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+      <p class="section-label">Contact</p>
+      <div class="contact-inner">
+        <h2 class="contact-headline reveal">
+          Let's make<br /><em>something.</em>
+        </h2>
+        <div class="contact-right reveal reveal-d1">
+          <p class="contact-intro">
+            Available for product design, design systems, and design-engineering
+            work. I work well in small teams, ambiguous problem spaces, and
+            places where "that's not my job" isn't a useful phrase.
+          </p>
+          <a href="mailto:hello@joshuaberry.com" class="contact-link">
+            hello@joshuaberry.com <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://linkedin.com/in/joshuaberry" class="contact-link">
+            LinkedIn <span class="link-arrow">↗</span>
+          </a>
+          <a href="https://github.com/joshuaberry" class="contact-link">
+            GitHub <span class="link-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <span>Joshua Berry — Design Technologist</span>
+      <span>Providence, RI · 2025</span>
+    </footer>
+
+    <script>
+      // ── Cursor ──
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+      let mx = 0,
+        my = 0,
+        rx = 0,
+        ry = 0;
+
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX;
+        my = e.clientY;
+        cursor.style.left = mx + "px";
+        cursor.style.top = my + "px";
+      });
+
+      (function animRing() {
+        rx += (mx - rx) * 0.13;
+        ry += (my - ry) * 0.13;
+        ring.style.left = rx + "px";
+        ring.style.top = ry + "px";
+        requestAnimationFrame(animRing);
+      })();
+
+      document.querySelectorAll("a, button").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+          cursor.classList.add("hovering");
+          ring.classList.add("hovering");
+        });
+        el.addEventListener("mouseleave", () => {
+          cursor.classList.remove("hovering");
+          ring.classList.remove("hovering");
+        });
+      });
+
+      // ── Ticker ──
+      const SKILLS = [
+        "UX Research",
+        "Interaction Design",
+        "Prototyping",
+        "Figma Plugin API",
+        "React",
+        "TypeScript",
+        "React Native",
+        "Design Systems",
+        "NLP & ML",
+        "Accessibility",
+        "HTML & CSS",
+        "Node.js",
+        "GraphQL",
+        "Claude MCP",
+        "Workshop Facilitation",
+        "User Testing",
+        "Design Thinking",
+        "Arduino",
+        "WebSockets",
+        "Amazon Comprehend",
+      ];
+      const track = document.getElementById("tickerTrack");
+      let html = "";
+      for (let p = 0; p < 2; p++) {
+        SKILLS.forEach((s) => {
+          html += `<span class="ticker-item">${s}</span><span class="ticker-dot">✦</span>`;
+        });
+      }
+      track.innerHTML = html;
+
+      // ── Scroll reveal ──
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("in-view");
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>
