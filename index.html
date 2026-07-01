@@ -389,6 +389,28 @@
         filter: saturate(1) contrast(1.02);
       }
 
+      .works-more {
+        margin-top: 28px;
+        text-align: right;
+      }
+      .works-more a {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 400;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: var(--ink);
+        opacity: 0.45;
+        transition:
+          opacity 0.2s,
+          color 0.2s;
+      }
+      .works-more a:hover {
+        opacity: 1;
+        color: var(--rust);
+      }
+
       /* ─── Skills ─── */
       #skills {
         padding: 120px 52px;
@@ -891,6 +913,10 @@
           <img src="images/lincoln-continental.jpg" alt="Custom center console hardware rig with embedded iPad and rotary encoders inside the Lincoln Continental prototype" class="work-image">
         </div>
       </a>
+
+      <div class="works-more reveal reveal-d3">
+        <a href="much-older-work.html">Much Older Work →</a>
+      </div>
     </section>
 
     <!-- Skills Grid -->

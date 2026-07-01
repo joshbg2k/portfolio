@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Much Older Work — Joshua Berry</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --paper: #f2ede6;
+        --ink: #0d0d0d;
+        --rust: #c94a1e;
+        --serif: "Instrument Serif", Georgia, serif;
+        --mono: "DM Mono", "Courier New", monospace;
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { cursor: none; scroll-behavior: smooth; }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--mono);
+        font-weight: 300;
+        font-size: 15px;
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 9000;
+      }
+      .cursor {
+        position: fixed; width: 10px; height: 10px; background: var(--ink);
+        border-radius: 50%; pointer-events: none; z-index: 10000;
+        transform: translate(-50%, -50%);
+        transition: width .15s ease, height .15s ease, background .15s ease;
+        mix-blend-mode: multiply;
+      }
+      .cursor-ring {
+        position: fixed; width: 38px; height: 38px;
+        border: 1px solid rgba(13,13,13,.4); border-radius: 50%;
+        pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
+        transition: border-color .15s, width .15s, height .15s;
+      }
+      .cursor.hovering { width: 5px; height: 5px; background: var(--rust); }
+      .cursor-ring.hovering { width: 52px; height: 52px; border-color: var(--rust); }
+
+      header {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 22px 52px; background: rgba(242,237,230,.92);
+        border-bottom: 1px solid rgba(13,13,13,.07);
+        backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      }
+      .header-name {
+        font-family: var(--serif); font-size: 17px; letter-spacing: -0.01em;
+        text-decoration: none; color: var(--ink);
+      }
+      nav { display: flex; gap: 28px; align-items: center; }
+      nav a {
+        font-family: var(--mono); font-size: 11px; font-weight: 400;
+        letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+        color: var(--ink); opacity: .45; transition: opacity .2s, color .2s;
+      }
+      nav a:hover { opacity: 1; color: var(--rust); }
+
+      .section-label {
+        font-family: var(--mono); font-size: 10px; font-weight: 400;
+        letter-spacing: .14em; text-transform: uppercase; color: var(--rust);
+        display: flex; align-items: center; gap: 14px; margin-bottom: 40px;
+      }
+      .section-label::before {
+        content: ""; display: block; width: 28px; height: 1px;
+        background: var(--rust); flex-shrink: 0;
+      }
+
+      /* ─── Page hero ─── */
+      #hero {
+        min-height: 58vh; display: flex; flex-direction: column;
+        justify-content: flex-end; padding: 150px 52px 64px;
+        border-bottom: 1px solid rgba(13,13,13,.08);
+      }
+      .hero-eyebrow {
+        font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+        text-transform: uppercase; color: var(--rust); margin-bottom: 24px;
+      }
+      .hero-headline {
+        font-family: var(--serif); font-size: clamp(44px, 7vw, 92px);
+        line-height: .98; letter-spacing: -.02em; margin-bottom: 28px; max-width: 900px;
+      }
+      .hero-headline em { font-style: italic; color: var(--rust); }
+      .hero-sub {
+        font-family: var(--mono); font-size: 14px; font-weight: 300; line-height: 1.75;
+        max-width: 620px; color: rgba(13,13,13,.58); margin-bottom: 32px;
+      }
+      .hero-meta {
+        display: flex; flex-wrap: wrap; gap: 32px; font-family: var(--mono);
+        font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+        color: rgba(13,13,13,.32); margin-bottom: 28px;
+      }
+      .hero-meta span::before { content: "—"; margin-right: 8px; opacity: .4; }
+      .jump-links { display: flex; flex-wrap: wrap; gap: 24px; }
+      .jump-links a {
+        font-family: var(--mono); font-size: 11px; font-weight: 400;
+        letter-spacing: .08em; text-decoration: none; color: var(--ink);
+        opacity: .55; border-bottom: 1px solid rgba(13,13,13,.2);
+        padding-bottom: 2px; transition: opacity .2s, color .2s, border-color .2s;
+      }
+      .jump-links a:hover { opacity: 1; color: var(--rust); border-color: var(--rust); }
+
+      /* ─── Project sections ─── */
+      .project {
+        border-top: 1px solid rgba(13,13,13,.08);
+      }
+      .project-intro { padding: 88px 52px 0; }
+      .project-eyebrow {
+        font-family: var(--mono); font-size: 11px; letter-spacing: .12em;
+        text-transform: uppercase; color: var(--rust); margin-bottom: 20px;
+      }
+      .project-title {
+        font-family: var(--serif); font-size: clamp(36px, 5vw, 64px);
+        line-height: 1; letter-spacing: -.02em; margin-bottom: 24px; max-width: 900px;
+      }
+      .project-title em { font-style: italic; color: var(--rust); }
+      .project-sub {
+        font-family: var(--mono); font-size: 14px; font-weight: 300; line-height: 1.75;
+        max-width: 620px; color: rgba(13,13,13,.58); margin-bottom: 28px;
+      }
+      .tag {
+        font-family: var(--mono); font-size: 9px; font-weight: 500;
+        letter-spacing: .1em; text-transform: uppercase; padding: 3px 8px;
+        border: 1px solid rgba(13,13,13,.16); border-radius: 2px;
+        color: rgba(13,13,13,.5);
+      }
+      .tags-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+
+      .flag {
+        margin: 28px 0 0; max-width: 900px;
+        border: 1px solid var(--rust);
+        background: rgba(201,74,30,.06);
+        padding: 14px 18px;
+        border-radius: 3px;
+        font-family: var(--mono); font-size: 12px; line-height: 1.7;
+        color: rgba(13,13,13,.75);
+      }
+      .flag b { color: var(--rust); }
+
+      .video-embed { padding: 40px 52px 0; max-width: 900px; }
+      .video-wrap {
+        position: relative; width: 100%; padding-top: 56.25%;
+        background: var(--ink); border-radius: 3px; overflow: hidden;
+      }
+      .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+      .project-body {
+        padding: 64px 52px 120px; display: grid;
+        grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start;
+        max-width: 1280px;
+      }
+      .rail { position: sticky; top: 120px; }
+      .rail-block { margin-bottom: 32px; }
+      .rail-label {
+        font-family: var(--mono); font-size: 10px; font-weight: 500;
+        letter-spacing: .1em; text-transform: uppercase; color: rgba(13,13,13,.32);
+        margin-bottom: 6px;
+      }
+      .rail-value { font-family: var(--serif); font-size: 21px; letter-spacing: -.01em; }
+      .rail-value.small { font-size: 16px; line-height: 1.3; }
+
+      .body-copy { display: flex; flex-direction: column; gap: 22px; max-width: 680px; }
+      .body-copy p {
+        font-family: var(--mono); font-size: 14px; font-weight: 300;
+        line-height: 1.85; color: rgba(13,13,13,.7);
+      }
+      .body-copy a { color: var(--rust); text-decoration: none; border-bottom: 1px solid rgba(201,74,30,.35); }
+      .body-copy a:hover { border-bottom-color: var(--rust); }
+      .subhead {
+        font-family: var(--mono); font-size: 10px; font-weight: 500;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--rust);
+        margin-top: 8px;
+      }
+
+      .spec-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+      .spec-list li {
+        font-family: var(--mono); font-size: 13px; font-weight: 300;
+        line-height: 1.7; color: rgba(13,13,13,.7);
+        padding-left: 18px; border-left: 2px solid rgba(13,13,13,.12);
+      }
+      .spec-list b { color: var(--ink); font-weight: 500; }
+
+      .placeholder {
+        border: 1px dashed rgba(13,13,13,.25);
+        background: rgba(13,13,13,.03);
+        padding: 20px 22px; border-radius: 3px;
+      }
+      .placeholder p { color: rgba(13,13,13,.45); font-style: italic; }
+      .placeholder .placeholder-label {
+        font-family: var(--mono); font-size: 9px; font-weight: 500;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--rust);
+        margin-bottom: 10px; display: block;
+      }
+
+      .media-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px; }
+      .media-img { width: 100%; height: 220px; object-fit: cover; border-radius: 3px; display: block; }
+      .doc-card {
+        display: flex; flex-direction: column; justify-content: space-between;
+        height: 220px; padding: 20px 22px;
+        border: 1px solid rgba(13,13,13,.12); border-radius: 3px;
+        background: rgba(13,13,13,.02);
+        text-decoration: none; color: inherit;
+        transition: border-color .15s, background .15s;
+      }
+      .doc-card:hover { border-color: var(--rust); background: rgba(201,74,30,.03); }
+      .doc-card-type {
+        font-family: var(--mono); font-size: 9px; font-weight: 500;
+        letter-spacing: .14em; text-transform: uppercase; color: var(--rust);
+      }
+      .doc-card-title {
+        font-family: var(--serif); font-size: 17px; letter-spacing: -.01em;
+        color: var(--ink); line-height: 1.3; flex: 1; display: flex; align-items: center;
+      }
+      .doc-card-action {
+        font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
+        color: rgba(13,13,13,.4);
+      }
+      figure { margin: 0; }
+      figcaption {
+        font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+        color: rgba(13,13,13,.45); margin-top: 8px; line-height: 1.5;
+      }
+      .img-missing {
+        height: 220px; display: flex; align-items: center; justify-content: center;
+        text-align: center; padding: 16px;
+        border: 1px dashed rgba(13,13,13,.25); background: rgba(13,13,13,.03);
+        border-radius: 3px;
+        font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em;
+        color: rgba(13,13,13,.4); line-height: 1.6;
+      }
+      .media-slot {
+        margin-top: 8px;
+        border: 1px dashed rgba(13,13,13,.25);
+        background: rgba(13,13,13,.03);
+        height: 280px;
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+        text-transform: uppercase; color: rgba(13,13,13,.35);
+        border-radius: 3px;
+      }
+
+      .press-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+      .press-list li { font-family: var(--mono); font-size: 13px; line-height: 1.6; }
+
+      footer {
+        padding: 28px 52px; border-top: 1px solid rgba(13,13,13,.07);
+        display: flex; justify-content: space-between; align-items: center;
+        font-family: var(--mono); font-size: 11px; letter-spacing: .06em;
+        color: rgba(13,13,13,.28);
+      }
+
+      @media (max-width: 860px) {
+        header { padding: 18px 28px; }
+        #hero, .project-intro, .video-embed, .project-body, footer {
+          padding-left: 28px; padding-right: 28px;
+        }
+        .project-body { grid-template-columns: 1fr; gap: 40px; }
+        .rail { position: static; display: flex; flex-wrap: wrap; gap: 32px; }
+        .media-row { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 560px) {
+        nav a:nth-child(n + 2) { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <header>
+      <a href="index.html" class="header-name">Joshua Berry</a>
+      <nav>
+        <a href="index.html">← Back to Portfolio</a>
+      </nav>
+    </header>
+
+    <section id="hero">
+      <p class="hero-eyebrow">Archive</p>
+      <h1 class="hero-headline">Much Older<br /><em>Work.</em></h1>
+      <p class="hero-sub">
+        A couple of personal and independent projects from well before the
+        career case studies above — kept here for the record, not because
+        they're the sharpest work, but because they're where a lot of the
+        instincts started.
+      </p>
+      <div class="hero-meta">
+        <span>2010 – 2020</span>
+        <span>Personal / Independent</span>
+        <span>Kept for the record</span>
+      </div>
+      <div class="jump-links">
+        <a href="#signal-clock">01 — Signal Clock ↓</a>
+        <a href="#networked-loyalty">02 — Networked Loyalty ↓</a>
+      </div>
+    </section>
+
+    <!-- ═══ 01 — Signal Clock ═══ -->
+    <section class="project" id="signal-clock">
+      <div class="project-intro">
+        <p class="section-label">01 — Signal Clock</p>
+        <p class="project-eyebrow">Personal Project — Quarantine Build</p>
+        <h2 class="project-title">Signal<br /><em>Clock</em></h2>
+        <p class="project-sub">
+          An interactive clock for the home that listens to its surroundings
+          and turns ambient audio into the clock's hands — displayed live as
+          waveforms. Designed for anywhere people gather and sound is made:
+          home, office, media room. Concept has roots going back a few years;
+          this build started during quarantine.
+        </p>
+        <div class="tags-row">
+          <span class="tag">Processing</span>
+          <span class="tag">Raspberry Pi / Orange Pi</span>
+          <span class="tag">Custom Hardware</span>
+          <span class="tag">Audio Reactive</span>
+          <span class="tag">3D Printing</span>
+          <span class="tag">Woodworking</span>
+        </div>
+      </div>
+
+      <div class="video-embed">
+        <div class="video-wrap">
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/zANJedpeOQA?rel=0&modestbranding=1"
+            title="Signal Clock demo"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          ></iframe>
+        </div>
+      </div>
+
+      <div class="project-body">
+        <div class="rail">
+          <div class="rail-block">
+            <p class="rail-label">Type</p>
+            <p class="rail-value small">Personal / Ongoing</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Hardware</p>
+            <p class="rail-value small">Orange Pi PC (Armbian), prev. Raspberry Pi 3B+</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Software</p>
+            <p class="rail-value small">Processing</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Formerly</p>
+            <p class="rail-value small">Groove Clock (2010–2012)</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Recognition</p>
+            <p class="rail-value small">Figment NYC 2012, Governors Island — site B-1, as Groove Clock</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">In the wild</p>
+            <p class="rail-value small">Installed behind reception desks at a couple of startups</p>
+          </div>
+        </div>
+
+        <div class="body-copy">
+          <p class="subhead">The Concept</p>
+          <p>
+            Signal Clock listens to its surroundings and uses live audio input
+            to display the clock's hands as waveforms. The video above shows
+            the very first iteration of the current physical form — there's
+            still a lot of work to do. The idea itself goes back further:
+            this is the same project first built and shipped as Groove Clock,
+            rebuilt during quarantine as dedicated hardware and renamed
+            Signal Clock.
+          </p>
+
+          <p class="subhead">Hardware</p>
+          <ul class="spec-list">
+            <li><b>Board:</b> Orange Pi PC running Armbian — migrating from a Raspberry Pi 3B+ to a custom ARM Linux build for better performance.</li>
+            <li><b>Display:</b> Circular LCD touchscreen. Not plug-and-play — getting it working required reading the component's datasheet. The touchscreen has no driver board of its own, so I designed one and I'm writing the software driver myself.</li>
+            <li><b>Enclosure:</b> 3D printed PLA, primed and painted, with threaded inserts for hardware mounting.</li>
+            <li><b>Face plate:</b> Laser-cut maple, hand-ebonized using natural processes. The clock numbers are currently etched and hard to see — next revision they'll be metal, with relief to match the screws.</li>
+            <li><b>Bezel</b> (between screen and face plate): 3D printed via SLA.</li>
+          </ul>
+
+          <p class="subhead">Software</p>
+          <ul class="spec-list">
+            <li>Built in Processing. Audio input is "stylized" so the clock hands stay smooth, and frequencies that don't look good visually are filtered out.</li>
+            <li>Single tap the screen to pull up a radial-slider UI for screen color and microphone sensitivity.</li>
+            <li>Long press to pull up a shutdown UI.</li>
+          </ul>
+
+          <p class="subhead">Process &amp; Artifacts</p>
+          <div class="media-slot">Drop a build photo or close-up here</div>
+          <div class="media-slot" style="margin-top: 16px;">Drop another build photo here</div>
+
+          <p class="subhead">What's Next</p>
+          <ul class="spec-list">
+            <li>Smaller screw heads — the current ones are a bit large.</li>
+            <li>Clock face numbers to match the screws in material, finish, and relief.</li>
+            <li>Deepen the wood's black tone using natural processes if possible; otherwise mix a custom paint blend to match. The wood grain is staying either way.</li>
+            <li>Finish the touchscreen driver and full touch functionality.</li>
+          </ul>
+
+          <p class="subhead">History — as Groove Clock</p>
+          <p>
+            Before it was Signal Clock, this project shipped as
+            <b>Groove Clock</b> — an iPad app and public installation that
+            used ambient microphone input to manipulate the hands of an
+            on-screen clock. It launched on the App Store, was shown at Le
+            Poisson Rouge's interactive art exhibition in 2011, and was
+            installed at
+            <a href="https://figmentproject.org/" target="_blank" rel="noopener">Figment NYC 2012</a>
+            on Governors Island (site B-1, Nolan Park), per Figment's
+            official site map. The quarantine-era rebuild in the video above
+            moved the same idea off the iPad and into dedicated hardware,
+            under the new name Signal Clock.
+          </p>
+          <div class="media-row" style="margin-top: 8px;">
+            <figure>
+              <a href="documents/figment-2012-program-directory.pdf" target="_blank" rel="noopener" class="doc-card">
+                <span class="doc-card-type">PDF — Program Directory</span>
+                <span class="doc-card-title">Figment NYC 2012 — "Groove Clock," site B-1</span>
+                <span class="doc-card-action">Open PDF ↗</span>
+              </a>
+              <figcaption>Festival program directory listing every 2012 installation and its site code.</figcaption>
+            </figure>
+            <figure>
+              <a href="documents/figment-2012-site-map.pdf" target="_blank" rel="noopener" class="doc-card">
+                <span class="doc-card-type">PDF — Site Map</span>
+                <span class="doc-card-title">Figment NYC 2012 — Governors Island, grid ref. B-1</span>
+                <span class="doc-card-action">Open PDF ↗</span>
+              </a>
+              <figcaption>Official site map for grid reference B-1 (Nolan Park).</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 02 — Networked Loyalty ═══ -->
+    <section class="project" id="networked-loyalty">
+      <div class="project-intro">
+        <p class="section-label">02 — Networked Loyalty</p>
+        <p class="project-eyebrow">The Betacup Challenge, 2010</p>
+        <h2 class="project-title">Networked<br /><em>Loyalty</em></h2>
+        <p class="project-sub">
+          An entry to <a href="http://thebetacup.com/" target="_blank" rel="noopener" style="color: var(--rust); text-decoration: none; border-bottom: 1px solid rgba(201,74,30,.35);">the Betacup</a>'s
+          "Drink Sustainably" challenge — a Starbucks-sponsored, jovoto.com-hosted
+          open contest that asked creative thinkers to help solve the disposable
+          coffee cup waste problem. My entry, Networked Loyalty, proposed a
+          social/incentive scheme to encourage cup reuse. It was named one of
+          five Community Rating Winners, selected by public vote.
+        </p>
+        <div class="tags-row">
+          <span class="tag">Concept</span>
+          <span class="tag">Loyalty / Incentive Design</span>
+          <span class="tag">Service Design</span>
+          <span class="tag">Sustainability</span>
+          <span class="tag">Competition</span>
+        </div>
+      </div>
+
+      <div class="project-body">
+        <div class="rail">
+          <div class="rail-block">
+            <p class="rail-label">Challenge</p>
+            <p class="rail-value small">The Betacup — "Drink Sustainably"</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Sponsor</p>
+            <p class="rail-value small">Starbucks Coffee Company</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Platform</p>
+            <p class="rail-value small">jovoto.com</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Year</p>
+            <p class="rail-value">2010</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Prize</p>
+            <p class="rail-value small">$2,000</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Result</p>
+            <p class="rail-value small">1 of 5 winning concepts, out of thousands of entries</p>
+          </div>
+          <div class="rail-block">
+            <p class="rail-label">Press</p>
+            <p class="rail-value small">New York Times, Core77, Popsop</p>
+          </div>
+        </div>
+
+        <div class="body-copy">
+          <p class="subhead">The Challenge</p>
+          <p>
+            The Betacup — backed by Starbucks as part of its push to serve
+            100% of hand-crafted beverages in reusable or recyclable cups by
+            2015 — launched an open contest on jovoto.com on April 1, 2010,
+            asking entrants to solve the disposable cup waste problem. 430
+            entries came in, ranging from biodegradable single-use cups to
+            edible "coffee balls" to social incentive schemes for reuse.
+            Starbucks put up $20,000 in prizes: $10,000 to the jury's top
+            pick, and $2,000 each to five entries chosen by public/community
+            rating.
+          </p>
+
+          <p class="subhead">The Concept</p>
+          <p>
+            Networked Loyalty proposed placing RFID-tagged stickers on
+            customers' existing reusable coffee mugs. Scanning the mug at the
+            point of sale would eliminate the waste created by disposable
+            cups while also updating a digital version of Starbucks' paper
+            "10th cup free" punch card automatically — no card to lose, no
+            stamp to forget, and a direct incentive to bring a reusable mug
+            back every time.
+          </p>
+
+          <p class="subhead">Entry &amp; Artifacts</p>
+          <div class="media-row">
+            <img src="images/betacup-logo.png" alt="Beta Cup entry mark — coffee-ring graphic used on the submission" class="media-img" style="object-fit: contain; background: #f5f5f5;">
+            <img src="images/betacup-mug.jpg" alt="Branded travel mug mockup with the Beta Cup coffee-ring logo" class="media-img">
+          </div>
+          <div class="media-row" style="margin-top: 16px;">
+            <img src="images/betacup-leaderboard.png" alt="jovoto.com Betacup contest leaderboard showing the Networked Loyalty entry by joshbg2k" class="media-img" style="grid-column: 1 / -1;">
+          </div>
+
+          <p class="subhead">Outcome</p>
+          <p>
+            Announced June 17, 2010: the jury's overall pick was Karma Cup
+            (Mira Holley, Nick Partridge, Gillian Langor, Mira Lynn, Zarla
+            Ludin, Ruth Prentice), with special mentions for The Betacup &amp;
+            The Betacup Campaign (Jesko Stoetzer), Champion Cup (Raph
+            D'Amico), and Band of Honor (Scott Moorhead). Networked Loyalty
+            was named one of five Community Rating Winners, selected by
+            public vote alongside The Betacup &amp; The Betacup Campaign,
+            Cuptokeep, The NextCup, and The Neutral Resource Coffee Cup.
+            Networked Loyalty went on to pick up coverage in the New York
+            Times and Core77, in addition to the contest recaps below.
+          </p>
+
+          <p class="subhead">Press</p>
+          <ul class="press-list">
+            <li><a href="https://archive.nytimes.com/mediadecoder.blogs.nytimes.com/2010/06/17/starbucks-hopes-there-is-no-java-jive-from-contest-results/" target="_blank" rel="noopener">The New York Times — "Starbucks Hopes There Is No Java Jive From Contest Results"</a></li>
+            <li>Core77</li>
+            <li><a href="https://popsop.com/the-betacup-and-starbucks-favoured-the-karma-cup/" target="_blank" rel="noopener">Popsop — "The Betacup and Starbucks Favoured the «Karma Cup»"</a> (source for the contest facts above)</li>
+            <li><a href="http://mashable.com/2010/06/18/starbucks-betacup-challenge/" target="_blank" rel="noopener">Mashable — "Starbucks Betacup Challenge"</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>Joshua Berry — Design Technologist</span>
+      <span>Archive · Much Older Work</span>
+    </footer>
+
+    <script>
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener("mousemove", (e) => {
+        mx = e.clientX; my = e.clientY;
+        cursor.style.left = mx + "px"; cursor.style.top = my + "px";
+      });
+      (function animRing() {
+        rx += (mx - rx) * 0.13; ry += (my - ry) * 0.13;
+        ring.style.left = rx + "px"; ring.style.top = ry + "px";
+        requestAnimationFrame(animRing);
+      })();
+      document.querySelectorAll("a, button").forEach((el) => {
+        el.addEventListener("mouseenter", () => { cursor.classList.add("hovering"); ring.classList.add("hovering"); });
+        el.addEventListener("mouseleave", () => { cursor.classList.remove("hovering"); ring.classList.remove("hovering"); });
+      });
+    </script>
+  </body>
+</html>
