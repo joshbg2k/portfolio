@@ -759,6 +759,42 @@
           grid-template-columns: 1fr;
         }
       }
+      /* ─── Lightbox ─── */
+      .lightbox-trigger {
+        cursor: zoom-in;
+        display: block;
+      }
+      #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 20000;
+        background: rgba(13,13,13,.88);
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+      }
+      #lightbox.open { display: flex; }
+      #lightbox img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        border-radius: 3px;
+        box-shadow: 0 24px 80px rgba(0,0,0,.5);
+      }
+      #lightbox-close {
+        position: absolute;
+        top: 20px; right: 24px;
+        font-family: var(--mono);
+        font-size: 13px;
+        letter-spacing: .08em;
+        color: rgba(255,255,255,.55);
+        background: none;
+        border: none;
+        cursor: pointer;
+        transition: color .15s;
+      }
+      #lightbox-close:hover { color: #fff; }
     </style>
   </head>
   <body>
@@ -855,8 +891,8 @@
             <span class="tag">TypeScript</span>
           </div>
         </div>
-        <div class="work-image-col">
-          <img src="images/affinity-groups-commits.png" alt="Commit distribution chart showing Josh Berry leading with 106 commits, ahead of all other contributors" class="work-image">
+        <div class="work-image-col" style="display: flex; flex-direction: column; justify-content: center;">
+          <img src="images/affinity-groups-commits.png" alt="Commit distribution chart showing Josh Berry leading with 106 commits, ahead of all other contributors" class="work-image lightbox-trigger" style="height: auto; object-fit: contain;" data-lightbox="images/affinity-groups-commits.png">
           <p style="font-family: var(--mono); font-size: 10px; font-weight: 300; line-height: 1.6; color: rgba(13,13,13,.45); margin-top: 8px; padding: 0 4px;">I was lead developer for ~3 months. This chart was taken ~6 months later — more contributors, project still active — and I still led in total commits.</p>
         </div>
       </a>
@@ -1217,6 +1253,35 @@
         { threshold: 0.1 },
       );
       document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+      // ── Lightbox ──
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
+
+      document.querySelectorAll("[data-lightbox]").forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          lightboxImg.src = el.dataset.lightbox;
+          lightbox.classList.add("open");
+        });
+      });
+
+      document.getElementById("lightbox-close").addEventListener("click", () => {
+        lightbox.classList.remove("open");
+      });
+
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) lightbox.classList.remove("open");
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") lightbox.classList.remove("open");
+      });
     </script>
+
+    <div id="lightbox">
+      <button id="lightbox-close">ESC / close ✕</button>
+      <img id="lightbox-img" src="" alt="Enlarged view">
+    </div>
   </body>
 </html>
