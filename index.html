@@ -1252,6 +1252,14 @@
         { threshold: 0.1 },
       );
       document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+    </script>
+
+    <div id="lightbox">
+      <button id="lightbox-close">ESC / close ✕</button>
+      <img id="lightbox-img" src="" alt="Enlarged view">
+    </div>
+
+    <script>
       // ── Lightbox ──
       const lightbox = document.getElementById("lightbox");
       const lightboxImg = document.getElementById("lightbox-img");
@@ -1277,10 +1285,5 @@
         if (e.key === "Escape") lightbox.classList.remove("open");
       });
     </script>
-
-    <div id="lightbox">
-      <button id="lightbox-close">ESC / close ✕</button>
-      <img id="lightbox-img" src="" alt="Enlarged view">
-    </div>
   </body>
 </html>
